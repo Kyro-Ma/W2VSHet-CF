@@ -1,6 +1,10 @@
 # Multi-Modal Semantic-Collaborative Graph Neural Networks: A Unified Framework for Interpretable Recommendation Under Extreme Data Sparsity
 
-![Mainstructure of TRWH](mainstructure.png)
+## W2VSHet-K mainstructure
+![Mainstructure of TRWH](W2VSHet-K-mainstructure.png)
+
+## W2VSHet-T mainstructure
+![Mainstructure of TRWH](W2VSHet-T-mainstructure.png)
 
 ## Overview
 In this paper, we propose a novel recommendation framework, W2VSHet-CF, that unifies collaborative-filtering knowledge with rich semantic signals from titles 
