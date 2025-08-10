@@ -38,7 +38,7 @@ download metadata and reviews files and place them into ./Datasets directory.
 ## Quick Usage
 ### Train CF-SBERTHet/CF-SBERTHet-RW
 ```
-cd codes
+cd Codes
 python W2VSHet-K.py/W2VSHet-T.py
 ```
 
