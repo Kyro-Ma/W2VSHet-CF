@@ -1,48 +1,42 @@
-# Multi-Modal Semantic-Collaborative Graph Neural Networks: A Unified Framework for Interpretable Recommendation Under Extreme Data Sparsity
+# TRWH: A Text-Driven Random Walk Heterogeneous GNN for Semantic-Aware Sparse Recommendation
 
-## W2VSHet-K mainstructure
-![Mainstructure of W2VSHet-K](W2VSHet-K-mainstructure.png)
+# Dataset
+In this paper，we apply Amazon 2023 review dataset to evaluate our experiments - Amazon All_Beauty and Fashion.
 
-## W2VSHet-T mainstructure
-![Mainstructure of W2VSHet-T](W2VSHet-T-mainstructure.png)
+Link: https://amazon-reviews-2023.github.io/
 
-## Overview
-In this paper, we propose a novel recommendation framework, W2VSHet-CF, that unifies collaborative-filtering knowledge with rich semantic signals from titles 
-and user reviews inside a heterogeneous graph neural network (HeteroGNN). W2VSHet-CF forms enriched user/item representations by combining Word2Vec/Skip-Gram 
-semantic embeddings with CF-derived structure—local KNN links and global TruncatedSVD factors—and then learns on a multi-typed heterogeneous graph via 
-type-specific message passing to capture user–item, item–item, and user–user relations. Extensive experiments on four large-scale Amazon 2023 
-review datasets—Fashion, Beauty, Musical Instruments, and Movies & TV—show that W2VSHet-CF consistently surpasses strong recent baselines on
-RMSE and MAE, with two practical variants (W2VSHet-K for KNN edges and W2VSHet-T for SVD-based edges) delivering robust gains under extreme sparsity.
+After downloading the datasets, including review data and meta data, create a directory - Datasets, put these four .jsonl files into it. Next, use the "json_to_pkl_transformation" file in Codes directory to convert .jsonl to .pkl.
 
-
-## Env Setting
-```
-git clone https://github.com/Kyro-Ma/W2VSHet-CF.git
-cd W2VSHet-CF
-
-conda create -n [env name] python=3.12 pip
-conda activate [env name]
-
-pip install -r requirements.txt
+# Environment setup
+```bash
+git clone https://github.com/Kyro-Ma/TRWH.git
+cd TRWH
 
 cd Preprocess
 python json_to_pkl_transformation.py
 ```
+Our experiments were conducted on both Linux and Windows platforms using Python 3.12. The LLMs-based experiments were conducted on a Linux system equipped with 8 40GB A100 GPUs, while the Word2Vec-based experiments were performed on a Windows system with a NVIDIA RTX 4080 GPU. The CUDA versions used were 12.0 on Linux and 12.6 on Windows. For PyTorch, we used version 2.6.0+cu118 on Linux and 2.7.0+cu126 on Windows.
 
-## Datasets
-We conduct our experiments on four subsets of the Amazon 2023 dataset. The Amazon 2023 dataset, curated by the McAuley Lab, is a large-scale collection of Amazon 
-product reviews gathered in 2023. It contains rich information, including user-generated reviews, detailed item metadata, and relational links. For our study,
-we focus on the Fashion, Beauty, Musical Instruments, and Movies and TV categories. The link to the datasets: https://amazon-reviews-2023.github.io. Should 
-download metadata and reviews files and place them into ./Datasets directory.
+# Training and Evaluation
+In Codes directory, each file represents one of our proposed methods. 
 
-## Quick Usage
-### Train CF-SBERTHet/CF-SBERTHet-RW
-```
+For Word2Vec(W2V)-based approaches:
+```bash
 cd Codes
-python W2VSHet-K.py/W2VSHet-T.py
+
+python <W2VHet.py/W2VRHet.py> # select one of methods
 ```
 
+For LLM-based approaches, we firstly generate user and item prompts. Next, we generate their profiles with their prompts. Then, generate embeddings for users and items respectively before training. Finally, we input these embeddings into Heterogeneous graph for training:
+```bash
+cd Preprocess
 
+python <user_prompt.py/item_prompt.py>
+python <generate_user_profiles_DDP.py/generate_item_profiles_DDP.py>
+python <generate_user_emb.py/generate_item_emb.py>
 
+cd ../Codes
 
+python <LLMHet.py/LLMRHet.py>
+```
 
